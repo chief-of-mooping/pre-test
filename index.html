@@ -222,6 +222,7 @@
             font-weight: 600;
             margin-right: 12px;
             transition: all 0.2s;
+            flex-shrink: 0;
         }
 
         .option.selected .option-letter {
@@ -268,6 +269,7 @@
         .next-button:disabled {
             background: #C6C6C8;
             color: #8E8E93;
+            cursor: not-allowed;
         }
 
         /* Results Screen */
@@ -310,9 +312,10 @@
         }
 
         .radar-chart {
-            width: 300px;
-            height: 300px;
+            width: 280px;
+            height: 280px;
             margin: 0 auto;
+            display: block;
         }
 
         .scores-container {
@@ -325,9 +328,94 @@
             padding: 16px;
             margin-bottom: 12px;
             display: flex;
-            justify-content: between;
+            justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .answers-review {
+            margin: 20px;
+        }
+
+        .review-section {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .review-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .review-item {
+            background: #F8F9FA;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid #E5E5EA;
+        }
+
+        .review-item.correct {
+            border-left-color: #34C759;
+            background: #F0FDF4;
+        }
+
+        .review-item.incorrect {
+            border-left-color: #FF3B30;
+            background: #FEF2F2;
+        }
+
+        .review-question {
+            font-size: 14px;
+            font-weight: 500;
+            color: #000;
+            margin-bottom: 8px;
+        }
+
+        .review-answer {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .review-correct {
+            font-size: 13px;
+            color: #34C759;
+            font-weight: 500;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #007AFF;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #8E8E93;
+            margin-top: 4px;
         }
 
         .score-label {
@@ -354,6 +442,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            width: calc(100% - 40px);
         }
 
         .restart-button:active {
@@ -366,6 +455,9 @@
             .container { background: #000; }
             .nav-bar { background: rgba(28, 28, 30, 0.9); border-bottom-color: #38383A; }
             .nav-title { color: #fff; }
+            .welcome-title { color: #fff; }
+            .progress-container { background: #1C1C1E; }
+            .progress-text { color: #8E8E93; }
             .question-card { background: #1C1C1E; }
             .question-text { color: #fff; }
             .option { background: #2C2C2E; color: #fff; }
@@ -374,6 +466,27 @@
             .chart-title { color: #fff; }
             .score-item { background: #1C1C1E; }
             .score-label { color: #fff; }
+            .stat-card { background: #1C1C1E; }
+            .review-section { background: #1C1C1E; }
+            .review-title { color: #fff; }
+            .review-question { color: #fff; }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #007AFF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -425,13 +538,21 @@
                 <p class="results-subtitle">คะแนนรวม: <span id="totalScore">0</span>/100</p>
             </div>
 
+            <div class="summary-stats" id="summaryStats">
+                <!-- Summary statistics will be populated here -->
+            </div>
+
             <div class="chart-container">
                 <h3 class="chart-title">กราฟเรดาห์แสดงศักยภาพ</h3>
-                <canvas class="radar-chart" id="radarChart"></canvas>
+                <canvas class="radar-chart" id="radarChart" width="280" height="280"></canvas>
             </div>
 
             <div class="scores-container" id="scoresContainer">
                 <!-- Individual scores will be populated here -->
+            </div>
+
+            <div class="answers-review" id="answersReview">
+                <!-- Review answers will be populated here -->
             </div>
 
             <button class="restart-button" onclick="restartTest()">ทำแบบทดสอบใหม่</button>
@@ -810,6 +931,14 @@
 
         // Start test
         function startTest() {
+            // Reset state
+            currentQuestion = 0;
+            answers = {};
+            startTime = Date.now();
+            
+            // Clear any saved data
+            clearStorage();
+            
             document.getElementById('welcomeScreen').classList.remove('active');
             document.getElementById('questionScreen').classList.add('active');
             loadQuestion();
@@ -935,7 +1064,7 @@
             
             // Convert to percentages
             const percentageScores = categoryScores.map((score, index) => 
-                Math.round((score / categoryTotals[index]) * 100)
+                categoryTotals[index] > 0 ? Math.round((score / categoryTotals[index]) * 100) : 0
             );
             
             // Calculate total score
@@ -948,26 +1077,67 @@
             // Display total score
             document.getElementById('totalScore').textContent = totalScore;
             
+            // Display summary statistics
+            displaySummaryStats(totalCorrect, questions.length);
+            
             // Create radar chart
             createRadarChart(percentageScores);
             
             // Display individual scores
             displayIndividualScores(percentageScores);
+            
+            // Display answers review
+            displayAnswersReview();
+        }
+
+        // Display summary statistics
+        function displaySummaryStats(correct, total) {
+            const container = document.getElementById('summaryStats');
+            const incorrect = total - correct;
+            const percentage = Math.round((correct / total) * 100);
+            
+            container.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number" style="color: #34C759;">${correct}</div>
+                    <div class="stat-label">ข้อถูก</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" style="color: #FF3B30;">${incorrect}</div>
+                    <div class="stat-label">ข้อผิด</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${percentage}%</div>
+                    <div class="stat-label">คะแนนรวม</div>
+                </div>
+            `;
         }
 
         // Create radar chart
         function createRadarChart(scores) {
             const canvas = document.getElementById('radarChart');
+            if (!canvas) return;
+            
             const ctx = canvas.getContext('2d');
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            const radius = 120;
+            const size = 280;
+            const centerX = size / 2;
+            const centerY = size / 2;
+            const radius = 100;
+            
+            // Set canvas size explicitly
+            canvas.width = size;
+            canvas.height = size;
             
             // Clear canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, size, size);
+            
+            // Check for dark mode
+            const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const gridColor = isDarkMode ? '#38383A' : '#E5E5EA';
+            const textColor = isDarkMode ? '#FFFFFF' : '#000000';
+            const labelColor = isDarkMode ? '#8E8E93' : '#8E8E93';
             
             // Draw background circles
-            ctx.strokeStyle = '#E5E5EA';
+            ctx.strokeStyle = gridColor;
             ctx.lineWidth = 1;
             for (let i = 1; i <= 5; i++) {
                 ctx.beginPath();
@@ -975,9 +1145,22 @@
                 ctx.stroke();
             }
             
-            // Draw axes
+            // Draw percentage labels
+            ctx.fillStyle = labelColor;
+            ctx.font = '10px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            for (let i = 1; i <= 5; i++) {
+                const labelRadius = (radius * i) / 5;
+                const percentage = (i * 20) + '%';
+                ctx.fillText(percentage, centerX, centerY - labelRadius);
+            }
+            
+            // Draw axes and labels
             const angleStep = (2 * Math.PI) / 6;
-            ctx.strokeStyle = '#E5E5EA';
+            const shortLabels = ['Marketing', 'Platform', 'Analytics', 'Payment', 'Logistics', 'Experience'];
+            
+            ctx.strokeStyle = gridColor;
             ctx.lineWidth = 1;
             
             for (let i = 0; i < 6; i++) {
@@ -985,36 +1168,29 @@
                 const x = centerX + Math.cos(angle) * radius;
                 const y = centerY + Math.sin(angle) * radius;
                 
+                // Draw axis line
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
                 ctx.lineTo(x, y);
                 ctx.stroke();
                 
                 // Draw labels
-                ctx.fillStyle = '#000';
-                ctx.font = '12px -apple-system, BlinkMacSystemFont, sans-serif';
+                ctx.fillStyle = textColor;
+                ctx.font = '11px -apple-system, BlinkMacSystemFont, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 
-                const labelX = centerX + Math.cos(angle) * (radius + 20);
-                const labelY = centerY + Math.sin(angle) * (radius + 20);
+                const labelX = centerX + Math.cos(angle) * (radius + 25);
+                const labelY = centerY + Math.sin(angle) * (radius + 25);
                 
-                // Wrap long category names
-                const categoryName = categoryNames[i];
-                const words = categoryName.split(' ');
-                if (words.length > 1) {
-                    ctx.fillText(words[0], labelX, labelY - 8);
-                    ctx.fillText(words[1], labelX, labelY + 8);
-                } else {
-                    ctx.fillText(categoryName, labelX, labelY);
-                }
+                ctx.fillText(shortLabels[i], labelX, labelY);
             }
             
             // Draw score polygon
             ctx.beginPath();
             ctx.strokeStyle = '#007AFF';
             ctx.fillStyle = 'rgba(0, 122, 255, 0.2)';
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 2;
             
             for (let i = 0; i < 6; i++) {
                 const angle = i * angleStep - Math.PI / 2;
@@ -1042,8 +1218,14 @@
                 const y = centerY + Math.sin(angle) * scoreRadius;
                 
                 ctx.beginPath();
-                ctx.arc(x, y, 4, 0, 2 * Math.PI);
+                ctx.arc(x, y, 3, 0, 2 * Math.PI);
                 ctx.fill();
+                
+                // Add score text near points
+                ctx.fillStyle = '#007AFF';
+                ctx.font = 'bold 10px -apple-system, BlinkMacSystemFont, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(scores[i] + '%', x, y - 8);
             }
         }
 
@@ -1071,39 +1253,118 @@
             });
         }
 
-        // Restart test
+        // Display answers review
+        function displayAnswersReview() {
+            const container = document.getElementById('answersReview');
+            const letters = ['ก', 'ข', 'ค', 'ง'];
+            
+            // Group questions by category
+            const categorizedQuestions = {};
+            questions.forEach((question, index) => {
+                if (!categorizedQuestions[question.category]) {
+                    categorizedQuestions[question.category] = [];
+                }
+                categorizedQuestions[question.category].push({
+                    ...question,
+                    index: index,
+                    userAnswer: answers[index],
+                    isCorrect: answers[index] === question.correct
+                });
+            });
+            
+            let reviewHTML = '<div class="review-section"><h3 class="review-title">📝 เฉลยแบบทดสอบ</h3>';
+            
+            Object.keys(categorizedQuestions).forEach(category => {
+                const categoryQuestions = categorizedQuestions[category];
+                const correctCount = categoryQuestions.filter(q => q.isCorrect).length;
+                
+                reviewHTML += `
+                    <div style="margin: 20px 0;">
+                        <h4 style="color: #007AFF; font-size: 16px; margin-bottom: 12px;">
+                            ${category} (${correctCount}/${categoryQuestions.length} ข้อ)
+                        </h4>
+                `;
+                
+                categoryQuestions.forEach((question, qIndex) => {
+                    const itemClass = question.isCorrect ? 'correct' : 'incorrect';
+                    const icon = question.isCorrect ? '✅' : '❌';
+                    
+                    reviewHTML += `
+                        <div class="review-item ${itemClass}">
+                            <div class="review-question">
+                                ${icon} ข้อ ${question.index + 1}: ${question.text}
+                            </div>
+                            <div class="review-answer">
+                                คำตอบของคุณ: ${letters[question.userAnswer]} ${question.options[question.userAnswer]}
+                            </div>
+                            ${!question.isCorrect ? `
+                                <div class="review-correct">
+                                    เฉลย: ${letters[question.correct]} ${question.options[question.correct]}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+                
+                reviewHTML += '</div>';
+            });
+            
+            reviewHTML += '</div>';
+            container.innerHTML = reviewHTML;
+        }
+
+        // Restart test function (แก้ไขแล้ว)
         function restartTest() {
+            // Reset all variables
             currentQuestion = 0;
             answers = {};
             startTime = Date.now();
             
+            // Clear storage
+            clearStorage();
+            
+            // Hide results screen and show welcome screen
             document.getElementById('resultsScreen').classList.remove('active');
             document.getElementById('welcomeScreen').classList.add('active');
         }
 
-        // Simplified PWA functionality without Service Worker
-        // Store data in localStorage for offline capability
+        // Storage functions
         function saveToStorage() {
-            const data = {
-                questions: questions,
-                answers: answers,
-                currentQuestion: currentQuestion,
-                timestamp: Date.now()
-            };
-            localStorage.setItem('pretest_data', JSON.stringify(data));
+            try {
+                const data = {
+                    questions: questions,
+                    answers: answers,
+                    currentQuestion: currentQuestion,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem('pretest_data', JSON.stringify(data));
+            } catch (error) {
+                console.log('Could not save to localStorage:', error);
+            }
         }
 
         function loadFromStorage() {
-            const stored = localStorage.getItem('pretest_data');
-            if (stored) {
-                const data = JSON.parse(stored);
-                // Restore state if needed
-                return data;
+            try {
+                const stored = localStorage.getItem('pretest_data');
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    return data;
+                }
+            } catch (error) {
+                console.log('Could not load from localStorage:', error);
             }
             return null;
         }
 
-        // Add PWA install prompt
+        function clearStorage() {
+            try {
+                localStorage.removeItem('pretest_data');
+            } catch (error) {
+                console.log('Could not clear localStorage:', error);
+            }
+        }
+
+        // PWA functionality
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -1121,6 +1382,7 @@
                         console.log('User accepted the install prompt');
                     }
                     deferredPrompt = null;
+                    installButton.remove();
                 });
             };
             
@@ -1131,7 +1393,7 @@
             }
         });
 
-        // Add manifest.json content
+        // Create manifest dynamically
         const manifest = {
             "name": "E-commerce Pre-test Assessment",
             "short_name": "E-commerce Test",
@@ -1165,16 +1427,27 @@
 
         // Initialize app
         document.addEventListener('DOMContentLoaded', () => {
-            // Set canvas size for high DPI displays
-            const canvas = document.getElementById('radarChart');
-            const dpr = window.devicePixelRatio || 1;
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
-            const ctx = canvas.getContext('2d');
-            ctx.scale(dpr, dpr);
-            canvas.style.width = rect.width + 'px';
-            canvas.style.height = rect.height + 'px';
+            console.log('E-commerce Pre-test App initialized');
+            
+            // Load saved data if exists
+            const savedData = loadFromStorage();
+            if (savedData && savedData.answers && Object.keys(savedData.answers).length > 0) {
+                // Optional: Restore previous session
+                // answers = savedData.answers;
+                // currentQuestion = savedData.currentQuestion;
+            }
+        });
+
+        // Handle page visibility changes
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') {
+                saveToStorage();
+            }
+        });
+
+        // Handle beforeunload to save progress
+        window.addEventListener('beforeunload', () => {
+            saveToStorage();
         });
     </script>
 </body>
