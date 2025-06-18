@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-test ธุรกิจพาณิชย์อิเล็กทรอนิกส์</title>
+    <meta name="description" content="ระบบประเมินความสามารถก่อนเรียน">
+    <meta name="theme-color" content="#007AFF">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="E-commerce Pre-test">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiByeD0iNDAiIGZpbGw9IiMwMDdBRkYiLz4KPHN2ZyB4PSI0MCIgeT0iNDAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9IndoaXRlIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIi8+Cjwvc3ZnPgo8L3N2Zz4K">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #F2F2F7;
+            color: #000;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 414px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: #F2F2F7;
+            position: relative;
+        }
+
+        .screen {
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            padding: 60px 20px 20px;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #007AFF, #5AC8FA);
+            border-radius: 30px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 122, 255, 0.3);
+        }
+
+        .welcome-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 10px;
+        }
+
+        .welcome-subtitle {
+            font-size: 17px;
+            color: #8E8E93;
+            margin-bottom: 40px;
+            line-height: 1.4;
+        }
+
+        .start-button {
+            background: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 32px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+
+        .start-button:active {
+            transform: scale(0.95);
+            background: #0051D0;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            background: rgba(248, 248, 248, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 44px 20px 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 0.5px solid #C6C6C8;
+        }
+
+        .nav-title {
+            font-size: 17px;
+            font-weight: 600;
+            text-align: center;
+            color: #000;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            padding: 20px;
+            background: white;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #E5E5EA;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #007AFF, #5AC8FA);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 15px;
+            color: #8E8E93;
+        }
+
+        /* Question Card */
+        .question-container {
+            padding: 20px;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-category {
+            background: #007AFF;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 500;
+            color: #000;
+            line-height: 1.4;
+            margin-bottom: 24px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: #F2F2F7;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            background: #E5E5EA;
+        }
+
+        .option.selected {
+            background: #E3F2FD;
+            border-color: #007AFF;
+            color: #007AFF;
+        }
+
+        .option-letter {
+            width: 32px;
+            height: 32px;
+            background: #8E8E93;
+            color: white;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 12px;
+            transition: all 0.2s;
+        }
+
+        .option.selected .option-letter {
+            background: #007AFF;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            padding: 20px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .nav-button {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .prev-button {
+            background: #F2F2F7;
+            color: #007AFF;
+        }
+
+        .prev-button:active {
+            background: #E5E5EA;
+        }
+
+        .next-button {
+            background: #007AFF;
+            color: white;
+        }
+
+        .next-button:active {
+            background: #0051D0;
+            transform: scale(0.98);
+        }
+
+        .next-button:disabled {
+            background: #C6C6C8;
+            color: #8E8E93;
+        }
+
+        /* Results Screen */
+        .results-screen {
+            padding: 0 0 40px 0;
+        }
+
+        .results-header {
+            background: linear-gradient(135deg, #007AFF, #5AC8FA);
+            color: white;
+            padding: 60px 20px 40px;
+            text-align: center;
+        }
+
+        .results-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .results-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .chart-container {
+            padding: 30px 20px;
+            background: white;
+            margin: -20px 20px 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #000;
+        }
+
+        .radar-chart {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
+
+        .scores-container {
+            margin: 20px;
+        }
+
+        .score-item {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .score-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #000;
+            flex: 1;
+        }
+
+        .score-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #007AFF;
+        }
+
+        .restart-button {
+            margin: 20px;
+            background: #34C759;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .restart-button:active {
+            background: #30B050;
+            transform: scale(0.98);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body { background: #000; color: #fff; }
+            .container { background: #000; }
+            .nav-bar { background: rgba(28, 28, 30, 0.9); border-bottom-color: #38383A; }
+            .nav-title { color: #fff; }
+            .question-card { background: #1C1C1E; }
+            .question-text { color: #fff; }
+            .option { background: #2C2C2E; color: #fff; }
+            .option:hover { background: #3A3A3C; }
+            .chart-container { background: #1C1C1E; }
+            .chart-title { color: #fff; }
+            .score-item { background: #1C1C1E; }
+            .score-label { color: #fff; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div class="screen active" id="welcomeScreen">
+            <div class="welcome-screen">
+                <div class="logo">📊</div>
+                <h1 class="welcome-title">Pre-test Assessment</h1>
+                <p class="welcome-subtitle">ประเมินความพร้อมก่อนเรียน<br>ธุรกิจพาณิชย์อิเล็กทรอนิกส์</p>
+                <button class="start-button" onclick="startTest()">เริ่มทำแบบทดสอบ</button>
+            </div>
+        </div>
+
+        <!-- Question Screen -->
+        <div class="screen" id="questionScreen">
+            <div class="nav-bar">
+                <div class="nav-title">แบบทดสอบ</div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">ข้อ 1 จาก 30</div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-card">
+                    <div class="question-category" id="questionCategory">Digital Marketing</div>
+                    <div class="question-text" id="questionText">กำลังโหลดคำถาม...</div>
+                    <div class="options-container" id="optionsContainer">
+                        <!-- Options will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-button prev-button" onclick="previousQuestion()" id="prevButton" style="display: none;">ก่อนหน้า</button>
+                <button class="nav-button next-button" onclick="nextQuestion()" id="nextButton" disabled>ถัดไป</button>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="screen" id="resultsScreen">
+            <div class="results-header">
+                <h1 class="results-title">ผลการทดสอบ</h1>
+                <p class="results-subtitle">คะแนนรวม: <span id="totalScore">0</span>/100</p>
+            </div>
+
+            <div class="chart-container">
+                <h3 class="chart-title">กราฟเรดาห์แสดงศักยภาพ</h3>
+                <canvas class="radar-chart" id="radarChart"></canvas>
+            </div>
+
+            <div class="scores-container" id="scoresContainer">
+                <!-- Individual scores will be populated here -->
+            </div>
+
+            <button class="restart-button" onclick="restartTest()">ทำแบบทดสอบใหม่</button>
+        </div>
+    </div>
+
+    <script>
+        // Questions database
+        const questions = [
+            // Digital Marketing (5 questions)
+            {
+                category: "Digital Marketing",
+                text: "SEO ย่อมาจากคำว่าอะไร?",
+                options: [
+                    "Search Engine Operation",
+                    "Search Engine Optimization",
+                    "Social Engine Online", 
+                    "System Electronic Online"
+                ],
+                correct: 1
+            },
+            {
+                category: "Digital Marketing",
+                text: "แพลตฟอร์มใดที่เหมาะสำหรับการทำ B2B Marketing มากที่สุด?",
+                options: [
+                    "TikTok",
+                    "Instagram", 
+                    "LinkedIn",
+                    "Snapchat"
+                ],
+                correct: 2
+            },
+            {
+                category: "Digital Marketing", 
+                text: "CPC ในการโฆษณาออนไลน์หมายถึงอะไร?",
+                options: [
+                    "Cost Per Click",
+                    "Cost Per Customer",
+                    "Click Per Customer",
+                    "Customer Per Click"
+                ],
+                correct: 0
+            },
+            {
+                category: "Digital Marketing",
+                text: "Email Marketing ที่มีประสิทธิภาพควรมี Open Rate เท่าไหร่?",
+                options: [
+                    "5-10%",
+                    "15-25%",
+                    "35-45%",
+                    "55-65%"
+                ],
+                correct: 1
+            },
+            {
+                category: "Digital Marketing",
+                text: "Influencer Marketing คืออะไร?",
+                options: [
+                    "การซื้อโฆษณาบน Google",
+                    "การใช้คนดังช่วยโปรโมทสินค้า",
+                    "การทำ SEO",
+                    "การส่ง Email Marketing"
+                ],
+                correct: 1
+            },
+
+            // E-commerce Platform (5 questions)
+            {
+                category: "E-commerce Platform",
+                text: "Shopify เป็นแพลตฟอร์มประเภทใด?",
+                options: [
+                    "Social Media",
+                    "E-commerce Builder", 
+                    "Payment Gateway",
+                    "Shipping Service"
+                ],
+                correct: 1
+            },
+            {
+                category: "E-commerce Platform",
+                text: "Marketplace ที่ใหญ่ที่สุดในเอเชียตะวันออกเฉียงใต้คือ?",
+                options: [
+                    "Amazon",
+                    "eBay",
+                    "Shopee",
+                    "Alibaba"
+                ],
+                correct: 2
+            },
+            {
+                category: "E-commerce Platform",
+                text: "WooCommerce ทำงานบนระบบใด?",
+                options: [
+                    "Shopify",
+                    "WordPress",
+                    "Magento", 
+                    "BigCommerce"
+                ],
+                correct: 1
+            },
+            {
+                category: "E-commerce Platform",
+                text: "Mobile Commerce (M-Commerce) หมายถึงอะไร?",
+                options: [
+                    "การขายสินค้าบนคอมพิวเตอร์",
+                    "การขายสินค้าผ่านมือถือ",
+                    "การขายสินค้าในห้างสรรพสินค้า",
+                    "การขายสินค้าผ่านโทรทัศน์"
+                ],
+                correct: 1
+            },
+            {
+                category: "E-commerce Platform",
+                text: "ข้อดีของการขายใน Marketplace คืออะไร?",
+                options: [
+                    "ควบคุมแบรนด์ได้เต็มที่",
+                    "มีลูกค้าฐานเดิมให้",
+                    "ไม่ต้องจ่ายค่าคอมมิชชั่น",
+                    "ราคาถูกกว่าเว็บไซต์เอง"
+                ],
+                correct: 1
+            },
+
+            // Business Analytics (5 questions)
+            {
+                category: "Business Analytics",
+                text: "Google Analytics ใช้สำหรับอะไร?",
+                options: [
+                    "สร้างเว็บไซต์",
+                    "วิเคราะห์ข้อมูลเว็บไซต์",
+                    "ทำการตลาด",
+                    "ขายสินค้า"
+                ],
+                correct: 1
+            },
+            {
+                category: "Business Analytics",
+                text: "KPI ย่อมาจากคำว่าอะไร?",
+                options: [
+                    "Key Performance Indicator",
+                    "Keep Performance Index",
+                    "Key Product Information",
+                    "Keep Product Inventory"
+                ],
+                correct: 0
+            },
+            {
+                category: "Business Analytics",
+                text: "Conversion Rate คืออะไร?",
+                options: [
+                    "อัตราการเข้าชมเว็บไซต์",
+                    "อัตราการซื้อสินค้า",
+                    "อัตราการแปลงผู้เยี่ยมชมเป็นลูกค้า",
+                    "อัตราการกลับมาซื้อซ้ำ"
+                ],
+                correct: 2
+            },
+            {
+                category: "Business Analytics",
+                text: "Bounce Rate สูงหมายความว่าอย่างไร?",
+                options: [
+                    "มีคนเข้าเว็บเยอะ",
+                    "มีคนซื้อสินค้าเยอะ",
+                    "มีคนออกจากเว็บเร็ว",
+                    "มีคนแชร์เว็บเยอะ"
+                ],
+                correct: 2
+            },
+            {
+                category: "Business Analytics",
+                text: "Customer Lifetime Value (CLV) คืออะไร?",
+                options: [
+                    "จำนวนลูกค้าทั้งหมด",
+                    "มูลค่าที่ลูกค้าจ่ายตลอดชีวิต",
+                    "เวลาที่ลูกค้าใช้บนเว็บ",
+                    "จำนวนครั้งที่ลูกค้าซื้อ"
+                ],
+                correct: 1
+            },
+
+            // Payment & Security (5 questions)
+            {
+                category: "Payment & Security",
+                text: "Payment Gateway คืออะไร?",
+                options: [
+                    "ระบบจัดส่งสินค้า",
+                    "ระบบชำระเงินออนไลน์",
+                    "ระบบจัดการคลังสินค้า",
+                    "ระบบการตลาด"
+                ],
+                correct: 1
+            },
+            {
+                category: "Payment & Security",
+                text: "SSL Certificate ใช้เพื่ออะไร?",
+                options: [
+                    "เพิ่มความเร็วเว็บไซต์",
+                    "ป้องกันข้อมูลในการส่งผ่าน",
+                    "เพิ่ม SEO Ranking",
+                    "ลดค่าใช้จ่าย"
+                ],
+                correct: 1
+            },
+            {
+                category: "Payment & Security",
+                text: "กระเป๋าเงินดิจิทัลที่ได้รับความนิยมในประเทศไทยคือ?",
+                options: [
+                    "PayPal",
+                    "TrueMoney Wallet",
+                    "Alipay",
+                    "Google Pay"
+                ],
+                correct: 1
+            },
+            {
+                category: "Payment & Security",
+                text: "GDPR เกี่ยวข้องกับอะไร?",
+                options: [
+                    "การชำระเงิน",
+                    "การจัดส่งสินค้า",
+                    "การคุ้มครองข้อมูลส่วนบุคคล",
+                    "การทำการตลาด"
+                ],
+                correct: 2
+            },
+            {
+                category: "Payment & Security",
+                text: "Two-Factor Authentication (2FA) คืออะไร?",
+                options: [
+                    "การชำระเงิน 2 ครั้ง",
+                    "การยืนยันตัวตน 2 ขั้นตอน",
+                    "การส่งสินค้า 2 ที่",
+                    "การโฆษณา 2 แพลตฟอร์ม"
+                ],
+                correct: 1
+            },
+
+            // Supply Chain & Logistics (5 questions)
+            {
+                category: "Supply Chain & Logistics",
+                text: "Dropshipping คืออะไร?",
+                options: [
+                    "การส่งสินค้าด่วน",
+                    "การขายโดยไม่ต้องเก็บสต็อก",
+                    "การลดราคาสินค้า",
+                    "การส่งสินค้าฟรี"
+                ],
+                correct: 1
+            },
+            {
+                category: "Supply Chain & Logistics",
+                text: "Inventory Management คืออะไร?",
+                options: [
+                    "การจัดการลูกค้า",
+                    "การจัดการสต็อกสินค้า",
+                    "การจัดการเงิน",
+                    "การจัดการพนักงาน"
+                ],
+                correct: 1
+            },
+            {
+                category: "Supply Chain & Logistics",
+                text: "Last Mile Delivery หมายถึงอะไร?",
+                options: [
+                    "การส่งสินค้าระหว่างประเทศ",
+                    "การส่งสินค้าขั้นสุดท้ายถึงลูกค้า",
+                    "การส่งสินค้าจากโรงงาน",
+                    "การส่งสินค้าไปคลังสินค้า"
+                ],
+                correct: 1
+            },
+            {
+                category: "Supply Chain & Logistics",
+                text: "Fulfillment Center คืออะไร?",
+                options: [
+                    "ศูนย์การเงิน",
+                    "ศูนย์การตลาด",
+                    "ศูนย์จัดเก็บและส่งสินค้า",
+                    "ศูนย์บริการลูกค้า"
+                ],
+                correct: 2
+            },
+            {
+                category: "Supply Chain & Logistics",
+                text: "Cross-border E-commerce คืออะไร?",
+                options: [
+                    "การขายสินค้าในประเทศ",
+                    "การขายสินค้าข้ามประเทศ",
+                    "การขายสินค้าในห้างสรรพสินค้า",
+                    "การขายสินค้าออนไลน์"
+                ],
+                correct: 1
+            },
+
+            // Customer Experience (5 questions)
+            {
+                category: "Customer Experience",
+                text: "UX ย่อมาจากคำว่าอะไร?",
+                options: [
+                    "User Experience",
+                    "User Extension",
+                    "Universal Experience",
+                    "Unique Experience"
+                ],
+                correct: 0
+            },
+            {
+                category: "Customer Experience",
+                text: "CRM ย่อมาจากคำว่าอะไร?",
+                options: [
+                    "Customer Relationship Management",
+                    "Customer Revenue Management",
+                    "Customer Retention Marketing",
+                    "Customer Referral Method"
+                ],
+                correct: 0
+            },
+            {
+                category: "Customer Experience",
+                text: "Customer Journey คืออะไร?",
+                options: [
+                    "การเดินทางของลูกค้า",
+                    "กระบวนการซื้อสินค้าของลูกค้า",
+                    "ระยะเวลาที่ลูกค้าใช้ซื้อ",
+                    "จำนวนสินค้าที่ลูกค้าซื้อ"
+                ],
+                correct: 1
+            },
+            {
+                category: "Customer Experience",
+                text: "Personalization ในอีคอมเมิร์ซคืออะไร?",
+                options: [
+                    "การขายสินค้าราคาถูก",
+                    "การปรับแต่งประสบการณ์ตามลูกค้า",
+                    "การขายสินค้าคุณภาพดี",
+                    "การส่งสินค้าเร็ว"
+                ],
+                correct: 1
+            },
+            {
+                category: "Customer Experience",
+                text: "Omnichannel คืออะไร?",
+                options: [
+                    "การขายหลายช่องทาง",
+                    "การขายช่องทางเดียว",
+                    "การขายผ่านอินเทอร์เน็ต",
+                    "การขายหน้าร้าน"
+                ],
+                correct: 0
+            }
+        ];
+
+        // Application state
+        let currentQuestion = 0;
+        let answers = {};
+        let startTime = Date.now();
+
+        // Category mapping
+        const categories = {
+            "Digital Marketing": 0,
+            "E-commerce Platform": 1, 
+            "Business Analytics": 2,
+            "Payment & Security": 3,
+            "Supply Chain & Logistics": 4,
+            "Customer Experience": 5
+        };
+
+        const categoryNames = [
+            "Digital Marketing",
+            "E-commerce Platform", 
+            "Business Analytics",
+            "Payment & Security",
+            "Supply Chain & Logistics", 
+            "Customer Experience"
+        ];
+
+        // Start test
+        function startTest() {
+            document.getElementById('welcomeScreen').classList.remove('active');
+            document.getElementById('questionScreen').classList.add('active');
+            loadQuestion();
+        }
+
+        // Load current question
+        function loadQuestion() {
+            const question = questions[currentQuestion];
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            
+            // Update progress
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `ข้อ ${currentQuestion + 1} จาก ${questions.length}`;
+            
+            // Update question content
+            document.getElementById('questionCategory').textContent = question.category;
+            document.getElementById('questionText').textContent = question.text;
+            
+            // Create options
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            const letters = ['ก', 'ข', 'ค', 'ง'];
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.onclick = () => selectOption(index);
+                
+                const selectedAnswer = answers[currentQuestion];
+                if (selectedAnswer === index) {
+                    optionDiv.classList.add('selected');
+                }
+                
+                optionDiv.innerHTML = `
+                    <div class="option-letter">${letters[index]}</div>
+                    <div>${option}</div>
+                `;
+                
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // Update navigation buttons
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+            
+            if (currentQuestion === 0) {
+                prevButton.style.display = 'none';
+            } else {
+                prevButton.style.display = 'block';
+            }
+            
+            // Check if answer is selected
+            const hasAnswer = answers[currentQuestion] !== undefined;
+            nextButton.disabled = !hasAnswer;
+            
+            if (currentQuestion === questions.length - 1) {
+                nextButton.textContent = 'ดูผลลัพธ์';
+            } else {
+                nextButton.textContent = 'ถัดไป';
+            }
+        }
+
+        // Select option
+        function selectOption(index) {
+            // Remove previous selection
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            event.currentTarget.classList.add('selected');
+            
+            // Store answer
+            answers[currentQuestion] = index;
+            
+            // Save to storage
+            saveToStorage();
+            
+            // Enable next button
+            document.getElementById('nextButton').disabled = false;
+            
+            // Add haptic feedback (if supported)
+            if (navigator.vibrate) {
+                navigator.vibrate(10);
+            }
+        }
+
+        // Next question
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        // Previous question
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        // Calculate scores and show results
+        function showResults() {
+            document.getElementById('questionScreen').classList.remove('active');
+            document.getElementById('resultsScreen').classList.add('active');
+            
+            // Calculate scores by category
+            const categoryScores = new Array(6).fill(0);
+            const categoryTotals = new Array(6).fill(0);
+            
+            questions.forEach((question, index) => {
+                const categoryIndex = categories[question.category];
+                categoryTotals[categoryIndex]++;
+                
+                if (answers[index] === question.correct) {
+                    categoryScores[categoryIndex]++;
+                }
+            });
+            
+            // Convert to percentages
+            const percentageScores = categoryScores.map((score, index) => 
+                Math.round((score / categoryTotals[index]) * 100)
+            );
+            
+            // Calculate total score
+            const totalCorrect = Object.keys(answers).reduce((total, questionIndex) => {
+                return total + (answers[questionIndex] === questions[questionIndex].correct ? 1 : 0);
+            }, 0);
+            
+            const totalScore = Math.round((totalCorrect / questions.length) * 100);
+            
+            // Display total score
+            document.getElementById('totalScore').textContent = totalScore;
+            
+            // Create radar chart
+            createRadarChart(percentageScores);
+            
+            // Display individual scores
+            displayIndividualScores(percentageScores);
+        }
+
+        // Create radar chart
+        function createRadarChart(scores) {
+            const canvas = document.getElementById('radarChart');
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 120;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw background circles
+            ctx.strokeStyle = '#E5E5EA';
+            ctx.lineWidth = 1;
+            for (let i = 1; i <= 5; i++) {
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, (radius * i) / 5, 0, 2 * Math.PI);
+                ctx.stroke();
+            }
+            
+            // Draw axes
+            const angleStep = (2 * Math.PI) / 6;
+            ctx.strokeStyle = '#E5E5EA';
+            ctx.lineWidth = 1;
+            
+            for (let i = 0; i < 6; i++) {
+                const angle = i * angleStep - Math.PI / 2;
+                const x = centerX + Math.cos(angle) * radius;
+                const y = centerY + Math.sin(angle) * radius;
+                
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                
+                // Draw labels
+                ctx.fillStyle = '#000';
+                ctx.font = '12px -apple-system, BlinkMacSystemFont, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                const labelX = centerX + Math.cos(angle) * (radius + 20);
+                const labelY = centerY + Math.sin(angle) * (radius + 20);
+                
+                // Wrap long category names
+                const categoryName = categoryNames[i];
+                const words = categoryName.split(' ');
+                if (words.length > 1) {
+                    ctx.fillText(words[0], labelX, labelY - 8);
+                    ctx.fillText(words[1], labelX, labelY + 8);
+                } else {
+                    ctx.fillText(categoryName, labelX, labelY);
+                }
+            }
+            
+            // Draw score polygon
+            ctx.beginPath();
+            ctx.strokeStyle = '#007AFF';
+            ctx.fillStyle = 'rgba(0, 122, 255, 0.2)';
+            ctx.lineWidth = 3;
+            
+            for (let i = 0; i < 6; i++) {
+                const angle = i * angleStep - Math.PI / 2;
+                const scoreRadius = (scores[i] / 100) * radius;
+                const x = centerX + Math.cos(angle) * scoreRadius;
+                const y = centerY + Math.sin(angle) * scoreRadius;
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Draw score points
+            ctx.fillStyle = '#007AFF';
+            for (let i = 0; i < 6; i++) {
+                const angle = i * angleStep - Math.PI / 2;
+                const scoreRadius = (scores[i] / 100) * radius;
+                const x = centerX + Math.cos(angle) * scoreRadius;
+                const y = centerY + Math.sin(angle) * scoreRadius;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+        }
+
+        // Display individual scores
+        function displayIndividualScores(scores) {
+            const container = document.getElementById('scoresContainer');
+            container.innerHTML = '';
+            
+            categoryNames.forEach((name, index) => {
+                const scoreItem = document.createElement('div');
+                scoreItem.className = 'score-item';
+                
+                const score = scores[index];
+                let color = '#FF3B30'; // Red
+                if (score >= 80) color = '#34C759'; // Green
+                else if (score >= 60) color = '#007AFF'; // Blue
+                else if (score >= 40) color = '#FF9500'; // Orange
+                
+                scoreItem.innerHTML = `
+                    <div class="score-label">${name}</div>
+                    <div class="score-value" style="color: ${color}">${score}%</div>
+                `;
+                
+                container.appendChild(scoreItem);
+            });
+        }
+
+        // Restart test
+        function restartTest() {
+            currentQuestion = 0;
+            answers = {};
+            startTime = Date.now();
+            
+            document.getElementById('resultsScreen').classList.remove('active');
+            document.getElementById('welcomeScreen').classList.add('active');
+        }
+
+        // Simplified PWA functionality without Service Worker
+        // Store data in localStorage for offline capability
+        function saveToStorage() {
+            const data = {
+                questions: questions,
+                answers: answers,
+                currentQuestion: currentQuestion,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('pretest_data', JSON.stringify(data));
+        }
+
+        function loadFromStorage() {
+            const stored = localStorage.getItem('pretest_data');
+            if (stored) {
+                const data = JSON.parse(stored);
+                // Restore state if needed
+                return data;
+            }
+            return null;
+        }
+
+        // Add PWA install prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button if needed
+            const installButton = document.createElement('button');
+            installButton.textContent = 'ติดตั้งแอป';
+            installButton.className = 'start-button';
+            installButton.style.marginTop = '20px';
+            installButton.onclick = () => {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            };
+            
+            const welcomeScreen = document.querySelector('.welcome-screen');
+            if (welcomeScreen && !document.querySelector('#installButton')) {
+                installButton.id = 'installButton';
+                welcomeScreen.appendChild(installButton);
+            }
+        });
+
+        // Add manifest.json content
+        const manifest = {
+            "name": "E-commerce Pre-test Assessment",
+            "short_name": "E-commerce Test",
+            "description": "ระบบประเมินความพร้อมก่อนเรียนธุรกิจพาณิชย์อิเล็กทรอนิกส์",
+            "start_url": "/",
+            "display": "standalone",
+            "background_color": "#F2F2F7",
+            "theme_color": "#007AFF",
+            "orientation": "portrait",
+            "icons": [
+                {
+                    "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iNDAiIGZpbGw9IiMwMDdBRkYiLz4KPHN2ZyB4PSI0OCIgeT0iNDgiIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAyTDEzLjA5IDguMjZMMjAgOUwxMy4wOSAxNS43NEwxMiAyMkwxMC45MSAxNS43NEw0IDlMMTAuOTEgOC4yNkwxMiAyWiIvPgo8L3N2Zz4KPC9zdmc+Cg==",
+                    "sizes": "192x192",
+                    "type": "image/svg+xml"
+                },
+                {
+                    "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iMTA0IiBmaWxsPSIjMDA3QUZGIi8+CjxzdmcgeD0iMTI4IiB5PSIxMjgiIHdpZHRoPSIyNTYiIGhlaWdodD0iMjU2IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9IndoaXRlIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIi8+Cjwvc3ZnPgo8L3N2Zz4K",
+                    "sizes": "512x512",
+                    "type": "image/svg+xml"
+                }
+            ]
+        };
+        
+        // Create and inject manifest
+        const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+        const manifestURL = URL.createObjectURL(manifestBlob);
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = manifestURL;
+        document.head.appendChild(link);
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set canvas size for high DPI displays
+            const canvas = document.getElementById('radarChart');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            const ctx = canvas.getContext('2d');
+            ctx.scale(dpr, dpr);
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+        });
+    </script>
+</body>
+</html>
